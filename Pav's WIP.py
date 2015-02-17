@@ -16,7 +16,9 @@ global coord2
 global treasureList
 treasureList = []
 global configure
+global tList
 global tre1, tre2, tre3, tre4, tre5, tre6, tre7, tre8, tre9, tre10, tre11
+tList=[]
 oneShot = 0
 global oneShot
 global varTreasure
@@ -126,56 +128,67 @@ def newTre():
         xx = 360
         yy = 240
         configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
+        tList.insert(0, tre1)
     elif counting == 2:
         tre2 = configure
         xx = 360
         yy = 240
         configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
+        tList.insert(1, tre2)
     elif counting == 3:
         tre3 = configure
         xx = 360
         yy = 240
         configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
+        tList.insert(2, tre3)
     elif counting == 4:
         tre4 = configure
         xx = 360
         yy = 240
         configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
+        tList.insert(3, tre4)
     elif counting == 5:
         tre5 = configure
         xx = 360
         yy = 240
         configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
+        tList.insert(4, tre5)
     elif counting == 6:
         tre6 = configure
         xx = 360
         yy = 240
         configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
+        tList.insert(5, tre6)
     elif counting == 7:
         tre7 = configure
         xx = 360
         yy = 240
         configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
+        tList.insert(6, tre7)
     elif counting == 8:
         tre8 = configure
         xx = 360
         yy = 240
         configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
+        tList.insert(7, tre8)
     elif counting == 9:
         tre9 = configure
         xx = 360
         yy = 240
         configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
+        tList.insert(8, tre9)
     elif counting == 10:
         tre10 = configure
         xx = 360
         yy = 240
         configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
+        tList.insert(9, tre10)
     elif counting == 11:
         tre11 = configure
         xx = 360
         yy = 240
         configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
+        tList.insert(10, tre11)
 
 def varNext():
     global oneShot2
@@ -346,117 +359,39 @@ class Robot(object):
         self.rotated = False
         
 
-        ##Creating LandMarks
-
-        #landmark 1
-        LM4IMG_url = "http://i.imgur.com/8AZkQjm.gif"
-        image4_byt = urlopen(LM4IMG_url).read()
-        image4_b64 = base64.encodestring(image4_byt)
-        self.photo4 = tk.PhotoImage(data=image4_b64)
-        self.LM1 = LandMark(100,100,150,150,'blue',True)
-        self.LM1.CreateLM()
-        self.LM4e = canvas.create_image(125,125, image=self.photo4)
-        self.LM1coords = self.LM1.givecoords()
-
-        
-        #landmark 2
-        LM2IMG_url = "http://i.imgur.com/znZzpKZ.gif"
-        image5_byt = urlopen(LM2IMG_url).read()
-        image5_b64 = base64.encodestring(image5_byt)
-        self.photo5 = tk.PhotoImage(data=image5_b64)
-        self.LM2 = LandMark(150,250,150,250,'green',True)
-        self.LM2.CreateLM()
-        self.LM2e = canvas.create_image(125,225, image=self.photo5)
-        self.LM2coords = self.LM2.givecoords()
-
-
-        #landmark 3
-        LM3IMG_url = "http://i.imgur.com/PvjBwBA.gif"
-        image3_byt = urlopen(LM3IMG_url).read()
-        image3_b64 = base64.encodestring(image3_byt)
-        self.photo3 = tk.PhotoImage(data=image3_b64)
-        self.LM3 = LandMark(200,200,250,250,'purple',True)
-        self.LM3.CreateLM()
-        self.LM3e = canvas.create_image(225,225, image=self.photo3)
-        self.LM3coords = self.LM3.givecoords()
-
-        
-        #landmark 4
-        LM4IMG_url = "http://i.imgur.com/T9Vht6S.gif"
-        image6_byt = urlopen(LM4IMG_url).read()
-        image6_b64 = base64.encodestring(image6_byt)
-        self.photo6 = tk.PhotoImage(data=image6_b64)
-        self.LM4 = LandMark(300,300,350,350,'orange',False)
-        self.LM4.CreateLM()
-        self.LM4e = canvas.create_image(325,325, image=self.photo6)
-        self.LM4coords = self.LM4.givecoords()
-
-
-        #landmark 5
-        LM5IMG_url = "http://i.imgur.com/ZWSvQtS.gif"
-        image7_byt = urlopen(LM5IMG_url).read()
-        image7_b64 = base64.encodestring(image7_byt)
-        self.photo7 = tk.PhotoImage(data=image7_b64)
-        self.LM5 = LandMark(400,400,450,450,'black',True)
-        self.LM5.CreateLM()
-        self.LM5e = canvas.create_image(425,425, image=self.photo7)
-        self.LM5coords = self.LM5.givecoords()
-
-        
-        ##Creating Tresure
-        self.Tresure = []
-        self.Tresure.append(self.LM1.havetresure())
-        self.Tresure.append(self.LM2.havetresure())
-        self.Tresure.append(self.LM3.havetresure())
-        self.Tresure.append(self.LM4.havetresure())
-        self.Tresure.append(self.LM5.havetresure())
-
-        
-        ##Creating lists of LandMarks and Tresure
-        self.destxy = []
-        self.LMList = [self.LM1,self.LM2,self.LM3,self.LM4,self.LM5]
-        self.listx = [self.LM1coords[0],self.LM2coords[0],self.LM3coords[0],self.LM4coords[0],self.LM5coords[0]]
-        self.listy = [self.LM1coords[1],self.LM2coords[1],self.LM3coords[1],self.LM4coords[1],self.LM5coords[1]]
-        self.listx2 = [self.LM1coords[2],self.LM2coords[2],self.LM3coords[2],self.LM4coords[2],self.LM5coords[2]]
-        self.listy2 = [self.LM1coords[3],self.LM2coords[3],self.LM3coords[3],self.LM4coords[3],self.LM5coords[3]]
-        self.Tresure = [self.Tresure[0],self.Tresure[1],self.Tresure[2],self.Tresure[3],self.Tresure[4]]
-
+      
 
         ##Call the method search
         self.search()
-
-
-        ##Creating a visable oval that represents the robot and a line for its look ahead vector
-        #http://i.imgur.com/zR2sDWw.gif
-        #self.id1 = canvas.create_oval(self.x,self.y,self.x1,self.y1,fill = 'grey')
 
         robotimage_url = "http://i.imgur.com/zR2sDWw.gif"
         image2_byt = urlopen(robotimage_url).read()
         image2_b64 = base64.encodestring(image2_byt)
         self.photo2 = tk.PhotoImage(data=image2_b64)
-        #canvas.create_image(0,0, image=photo2)
         self.id1 = canvas.create_image(self.x,self.y, image=self.photo2)
         canvas.update()
 
-        self.z = canvas.create_line(self.x+10,self.y+10,self.x+100,self.x+100)
-        self.rr = self.returncenter()
+       # self.z = canvas.create_line(self.x+10,self.y+10,self.x+100,self.x+100)
+       # self.rr = self.returncenter()
 
 
     ##The search method decides what LandMarks need to be visited and avoided
     def search(self):
-        self.q += 1
+        #self.q += 1
 
-        if self.Tresure[self.q] == True:
-            LMcoordtemp = self.LMList[self.q].givecoords()
-            destx = LMcoordtemp[2] - LMcoordtemp[0]
-            destx = destx/2
-            destx = destx+LMcoordtemp[0]
-            desty = LMcoordtemp[3] - LMcoordtemp[1]
-            desty = desty/2
-            desty = desty + LMcoordtemp[1]
-            self.destxy = [destx,desty]
-        else:
-            self.search()
+
+        ###this needs work
+
+        
+        LMcoordtemp = self.LMList[self.q].givecoords()
+        destx = LMcoordtemp[2] - LMcoordtemp[0]
+        destx = destx/2
+        destx = destx+LMcoordtemp[0]
+        desty = LMcoordtemp[3] - LMcoordtemp[1]
+        desty = desty/2
+        desty = desty + LMcoordtemp[1]
+        self.destxy = [destx,desty]
+        self.search()
 
     ##Not really used finds the center on the robots oval
     def returncenter(self):
