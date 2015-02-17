@@ -15,17 +15,17 @@ global coord1
 global coord2
 global treasureList
 treasureList = []
-global configure
-global tList
-global tre1, tre2, tre3, tre4, tre5, tre6, tre7, tre8, tre9, tre10, tre11
-tList=[]
+#global configure
+#global tList
+#global tre1, tre2, tre3, tre4, tre5, tre6, tre7, tre8, tre9, tre10, tre11
+#tList=[]
 oneShot = 0
 global oneShot
-global varTreasure
-varTreasure = 0
 oneShot2 = 0
 global oneShot2
 global counting
+global i
+i=1
 counting = 0
 root = Tk()
 root.title("Virtual Robot Treasure Hunt")
@@ -43,7 +43,23 @@ ypos = 0
 canvas.create_image(xpos, ypos, image=photo)
 canvas.pack()
 
-configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
+class Treasure(object):
+    def __init__(self,xx,yy):
+        self.treList = []
+        self.xx=xx
+        self.yy=yy
+        self.tre = canvas.create_rectangle(self.xx,self.yy,self.xx+50,self.yy+50,fill='white')
+        
+    def coordChange(self,xx,yy):
+        self.xx=xx
+        self.yy=yy
+        canvas.coords(self.tre,self.xx,self.yy,self.xx+50,self.yy+50)
+        canvas.update()
+                      
+    def nextTre(self,i):
+        self.i=i
+        self.treList(i) = self.tre
+        return treList
 
 amountTreasure=Listbox(root, selectmode=SINGLE, width=10, height=4)
 amountTreasure.insert(1, '3 Treasure')
@@ -51,12 +67,15 @@ amountTreasure.insert(2, '5 Treasure')
 amountTreasure.insert(3, '7 Treasure')
 amountTreasure.insert(4, '11 Treasure')
 amountTreasure.pack(side=LEFT)
+global treasure1
+treasure1 = Treasure(360,240)
 
-def LeedleLeedleLeedleLee():
+def Selection():
     global oneShot
     oneShot+=1
     global varTreasure
     varTreasure = 1
+    global i
     if oneShot>1:
         print "Your choice has already been made"
     else:
@@ -67,15 +86,20 @@ def LeedleLeedleLeedleLee():
             if selection == (0,):
                 varTreasure+=2
             elif selection == (1,):
-                 varTreasure+=4
+                varTreasure+=4
             elif selection == (2,):
                 varTreasure+=6
             elif selection == (3,):
                 varTreasure+=10
-    return varTreasure
+    return varTreasure, treasure1
 
-buttonSelect=Button(root, text='confirm', command=LeedleLeedleLeedleLee, )
+buttonSelect=Button(root, text='confirm', command=Selection)
 buttonSelect.pack(side=LEFT)
+
+coord1 = Spinbox(root, from_=0, to=640, width=4)
+coord1.pack(side=LEFT)
+coord2 = Spinbox(root, from_=0, to=640, width=4)
+coord2.pack(side=LEFT)
 
 def coordSet():
     xx = coord1.get()
@@ -87,14 +111,10 @@ def coordSet():
     elif yy>640:
         print "invalid y coordinate"
     else:
-        canvas.coords(configure, xx, yy, xx+10, yy+10)
-        canvas.update()
+    #    canvas.coords(configure,xx,yy,xx+10,yy+10)
+    #    canvas.update()
+        treasure1.coordChange(xx,yy)
         return xx, yy
-
-coord1 = Spinbox(root, from_=0, to=640, width=4)
-coord1.pack(side=LEFT)
-coord2 = Spinbox(root, from_=0, to=640, width=4)
-coord2.pack(side=LEFT)
 
 buttonSet=Button(root, text='set', command=coordSet)
 buttonSet.pack(side=LEFT)
@@ -102,11 +122,10 @@ buttonSet.pack(side=LEFT)
 def randCoord():
     xx = random.randint(0, 640)
     yy = random.randint(0, 640)
-    canvas.coords(configure, xx, yy, xx+10, yy+10)
-    canvas.update()
+    #canvas.coords(configure, xx, yy, xx+10, yy+10)
+    #canvas.update()
+    treasure1.coordChange(xx,yy)
     return xx, yy
-
-    
 
 btnRand=Button(root, text='Randomize', command=randCoord)
 btnRand.pack(side=LEFT)
@@ -117,8 +136,73 @@ treasureValue.insert(2, 'Silver')
 treasureValue.insert(3, 'Gold')
 treasureValue.pack(side=LEFT)
 
+
 def newTre():
-    global tre1, tre2, tre3, tre4, tre5, tre6, tre7, tre8, tre9, tre10, tre11
+    global i
+    global treasure1
+    treasure1.nextTre(i)
+    treasure1 = Treasure(360,240)
+    i+=1
+   # global tre1, tre2, tre3, tre4, tre5, tre6, tre7, tre8, tre9, tre10, tre11
+
+def varNext():
+    global oneShot2
+    global treasureList
+    oneShot2+=1
+    treVal = 0
+    treVar = treasureValue.curselection()
+    if treasureValue.curselection() == ():
+        print "Please select the value for the treasure"
+    elif treVar == (0,):
+        treVal = 1
+    elif treVar == (1,):
+        treVal = 2
+    elif treVar == (2,):
+        treVal = 3
+    if varTreasure == 3:
+        if oneShot2>2:
+            print "Press start to begin"
+        else:
+            treasureList.insert(oneShot2, treVal)
+            newTre()
+    if varTreasure == 5:
+        if oneShot2>4:
+            print "Press start to begin"
+        else:
+            treasureList.insert(oneShot2, treVal)
+            newTre()
+    if varTreasure == 7:
+        if oneShot2>6:
+            print "Press start to begin"
+        else:
+            treasureList.insert(oneShot2, treVal)
+            newTre()
+    if varTreasure == 11:
+        if oneShot2>10:
+            print "Press start to begin"
+        else:
+            treasureList.insert(oneShot2, treVal)
+            newTre()
+    return oneShot2
+   
+buttonNext=Button(root, text='Next', command=varNext)
+buttonNext.pack(side=LEFT)
+
+wishlist = Listbox(root, selectmode=MULTIPLE, width=7, height=4)
+wishlist.insert(1, 'All')
+wishlist.insert(2, 'Bronze')
+wishlist.insert(3, 'Silver')
+wishlist.insert(4, 'Gold')
+wishlist.pack(side=LEFT)
+
+
+        
+        
+
+
+
+
+'''
     global counting
     counting+=1
     global configure
@@ -189,57 +273,9 @@ def newTre():
         yy = 240
         configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
         tList.insert(10, tre11)
+'''
 
-def varNext():
-    global oneShot2
-    global treasureList
-    oneShot2+=1
-    treVal = 0
-    treVar = treasureValue.curselection()
-    if treasureValue.curselection() == ():
-        print "Please select the value for the treasure"
-    elif treVar == (0,):
-        treVal = 1
-    elif treVar == (1,):
-        treVal = 2
-    elif treVar == (2,):
-        treVal = 3
-    if varTreasure == 3:
-        if oneShot2>2:
-            print "Press start to begin"
-        else:
-            treasureList.insert(oneShot2, treVal)
-            newTre()
-    if varTreasure == 5:
-        if oneShot2>4:
-            print "Press start to begin"
-        else:
-            treasureList.insert(oneShot2, treVal)
-            newTre()
-    if varTreasure == 7:
-        if oneShot2>6:
-            print "Press start to begin"
-        else:
-            treasureList.insert(oneShot2, treVal)
-            newTre()
-    if varTreasure == 12:
-        if oneShot2>10:
-            print "Press start to begin"
-        else:
-            treasureList.insert(oneShot2, treVal)
-            newTre()
-    return oneShot2
             
-
-buttonNext=Button(root, text='Next', command=varNext)
-buttonNext.pack(side=LEFT)
-
-wishlist = Listbox(root, selectmode=MULTIPLE, width=7, height=4)
-wishlist.insert(1, 'All')
-wishlist.insert(2, 'Bronze')
-wishlist.insert(3, 'Silver')
-wishlist.insert(4, 'Gold')
-wishlist.pack(side=LEFT)
 
 greenTraffic = canvas.create_oval(3,29,3+10,29+10,fill = 'green')
 amberTraffic = canvas.create_oval(3,17,3+10,17+10,fill = 'black')
@@ -377,13 +413,13 @@ class Robot(object):
 
     ##The search method decides what LandMarks need to be visited and avoided
     def search(self):
-        #self.q += 1
+        self.q += 1
 
 
         ###this needs work
 
         
-        LMcoordtemp = self.LMList[self.q].givecoords()
+        LMcoordtemp = tList[self.q].givecoords()
         destx = LMcoordtemp[2] - LMcoordtemp[0]
         destx = destx/2
         destx = destx+LMcoordtemp[0]
