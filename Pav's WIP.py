@@ -58,8 +58,8 @@ class Treasure(object):
                       
     def nextTre(self,i):
         self.i=i
-        self.treList(i) = self.tre
-        return treList
+        self.treList.append(self.tre)
+        return self.treList
 
 amountTreasure=Listbox(root, selectmode=SINGLE, width=10, height=4)
 amountTreasure.insert(1, '3 Treasure')
@@ -194,88 +194,6 @@ wishlist.insert(2, 'Bronze')
 wishlist.insert(3, 'Silver')
 wishlist.insert(4, 'Gold')
 wishlist.pack(side=LEFT)
-
-
-        
-        
-
-
-
-
-'''
-    global counting
-    counting+=1
-    global configure
-    global oneShot2
-    if counting == 1:
-        tre1 = configure
-        xx = 360
-        yy = 240
-        configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
-        tList.insert(0, tre1)
-    elif counting == 2:
-        tre2 = configure
-        xx = 360
-        yy = 240
-        configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
-        tList.insert(1, tre2)
-    elif counting == 3:
-        tre3 = configure
-        xx = 360
-        yy = 240
-        configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
-        tList.insert(2, tre3)
-    elif counting == 4:
-        tre4 = configure
-        xx = 360
-        yy = 240
-        configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
-        tList.insert(3, tre4)
-    elif counting == 5:
-        tre5 = configure
-        xx = 360
-        yy = 240
-        configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
-        tList.insert(4, tre5)
-    elif counting == 6:
-        tre6 = configure
-        xx = 360
-        yy = 240
-        configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
-        tList.insert(5, tre6)
-    elif counting == 7:
-        tre7 = configure
-        xx = 360
-        yy = 240
-        configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
-        tList.insert(6, tre7)
-    elif counting == 8:
-        tre8 = configure
-        xx = 360
-        yy = 240
-        configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
-        tList.insert(7, tre8)
-    elif counting == 9:
-        tre9 = configure
-        xx = 360
-        yy = 240
-        configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
-        tList.insert(8, tre9)
-    elif counting == 10:
-        tre10 = configure
-        xx = 360
-        yy = 240
-        configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
-        tList.insert(9, tre10)
-    elif counting == 11:
-        tre11 = configure
-        xx = 360
-        yy = 240
-        configure = canvas.create_rectangle(xx,yy,xx+10,yy+10,fill='white')
-        tList.insert(10, tre11)
-'''
-
-            
 
 greenTraffic = canvas.create_oval(3,29,3+10,29+10,fill = 'green')
 amberTraffic = canvas.create_oval(3,17,3+10,17+10,fill = 'black')
@@ -419,7 +337,7 @@ class Robot(object):
         ###this needs work
 
         
-        LMcoordtemp = tList[self.q].givecoords()
+        LMcoordtemp = treList[self.q].givecoords()
         destx = LMcoordtemp[2] - LMcoordtemp[0]
         destx = destx/2
         destx = destx+LMcoordtemp[0]
