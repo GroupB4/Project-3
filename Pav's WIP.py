@@ -14,11 +14,10 @@ global yy
 global coord1
 global coord2
 global treasureList
+global treList
+treList = []
 treasureList = []
-#global configure
-#global tList
-#global tre1, tre2, tre3, tre4, tre5, tre6, tre7, tre8, tre9, tre10, tre11
-#tList=[]
+global treasure1, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7, treasure8, treasure9, treasure10, treasure11, treasure12
 oneShot = 0
 global oneShot
 oneShot2 = 0
@@ -49,17 +48,30 @@ class Treasure(object):
         self.xx=xx
         self.yy=yy
         self.tre = canvas.create_rectangle(self.xx,self.yy,self.xx+50,self.yy+50,fill='white')
-        
+
+    def givecoords(self):
+        self.xx2 = xx+50
+        self.yy2 = yy+50
+        return self.xx,self.yy,self.xx2,self.yy2
+    
     def coordChange(self,xx,yy):
         self.xx=xx
         self.yy=yy
         canvas.coords(self.tre,self.xx,self.yy,self.xx+50,self.yy+50)
         canvas.update()
-                      
-    def nextTre(self,i):
-        self.i=i
-        self.treList.append(self.tre)
-        return self.treList
+    
+def updateTre(i,storeTre2):
+    #storeTre2 = storeTre2
+    #i = i
+    treList.insert(i,storeTre2)
+    return treList
+
+def nextTreasure(storeTre):
+    global treList
+    #storeTre = storeTre
+    treList.append(storeTre)
+    print treList
+    return treList
 
 amountTreasure=Listbox(root, selectmode=SINGLE, width=10, height=4)
 amountTreasure.insert(1, '3 Treasure')
@@ -101,6 +113,46 @@ coord1.pack(side=LEFT)
 coord2 = Spinbox(root, from_=0, to=640, width=4)
 coord2.pack(side=LEFT)
 
+def newTre():
+    global treasure1, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7, treasure8, treasure9, treasure10, treasure11, treasure12
+    global counting
+    counting+=1
+    global oneShot2
+    if counting == 1:
+        nextTreasure(treasure1)
+        treasure2 = Treasure(360,240)
+    elif counting == 2:
+        nextTreasure(treasure2)
+        treasure3 = Treasure(360,240)
+    elif counting == 3:
+        nextTreasure(treasure3)
+        treasure4 = Treasure(360,240)
+    elif counting == 4:
+        nextTreasure(treasure4)
+        treasure5 = Treasure(360,240)
+    elif counting == 5:
+        nextTreasure(treasure5)
+        treasure6 = Treasure(360,240)
+    elif counting == 6:
+        nextTreasure(treasure6)
+        treasure7 = Treasure(360,240)
+    elif counting == 7:
+        nextTreasure(treasure7)
+        treasure8 = Treasure(360,240)
+    elif counting == 8:
+        nextTreasure(treasure8)
+        treasure9 = Treasure(360,240)
+    elif counting == 9:
+        nextTreasure(treasure9)
+        treasure10 = Treasure(360,240)
+    elif counting == 10:
+        nextTreasure(treasure10)
+        treasure11 = Treasure(360,240)
+    elif counting == 11:
+        nextTreasure(treasure11)
+        treasure12 = Treasure(360,240)
+    return counting
+
 def coordSet():
     xx = coord1.get()
     yy = coord2.get()
@@ -111,9 +163,42 @@ def coordSet():
     elif yy>640:
         print "invalid y coordinate"
     else:
-    #    canvas.coords(configure,xx,yy,xx+10,yy+10)
-    #    canvas.update()
-        treasure1.coordChange(xx,yy)
+        if counting == 0:
+            treasure1.coordChange(xx,yy)
+            updateTre(0,treasure1)
+        elif counting == 1:
+            treasure2.coordChange(xx,yy)
+            updateTre(1,treasure2)
+        elif counting == 2:
+            treasure3.coordChange(xx,yy)
+            updateTre(2,treasure3)
+        elif counting == 3:
+            treasure4.coordChange(xx,yy)
+            updateTre(3,treasure4)
+        elif counting == 4:
+            treasure5.coordChange(xx,yy)
+            updateTre(4,treasure5)
+        elif counting == 5:
+            treasure6.coordChange(xx,yy)
+            updateTre(5,treasure6)
+        elif counting == 6:
+            treasure7.coordChange(xx,yy)
+            updateTre(6,treasure7)
+        elif counting == 7:
+            treasure8.coordChange(xx,yy)
+            updateTre(7,treasure8)
+        elif counting == 8:
+            treasure9.coordChange(xx,yy)
+            updateTre(8,treasure9)
+        elif counting == 9:
+            treasure10.coordChange(xx,yy)
+            updateTre(9,treasure10)
+        elif counting == 10:
+            treasure11.coordChange(xx,yy)
+            updateTre(10,treasure11)
+        elif counting == 11:
+            treasure12.coordChange(xx,yy)
+            updateTre(11,treasure12)
         return xx, yy
 
 buttonSet=Button(root, text='set', command=coordSet)
@@ -122,9 +207,42 @@ buttonSet.pack(side=LEFT)
 def randCoord():
     xx = random.randint(0, 640)
     yy = random.randint(0, 640)
-    #canvas.coords(configure, xx, yy, xx+10, yy+10)
-    #canvas.update()
-    treasure1.coordChange(xx,yy)
+    if counting == 0:
+        treasure1.coordChange(xx,yy)
+        updateTre(0,treasure1)
+    elif counting == 1:
+        treasure2.coordChange(xx,yy)
+        updateTre(1,treasure2)
+    elif counting == 2:
+        treasure3.coordChange(xx,yy)
+        updateTre(2,treasure3)
+    elif counting == 3:
+        treasure4.coordChange(xx,yy)
+        updateTre(3,treasure4)
+    elif counting == 4:
+        treasure5.coordChange(xx,yy)
+        updateTre(4,treasure5)
+    elif counting == 5:
+        treasure6.coordChange(xx,yy)
+        updateTre(5,treasure6)
+    elif counting == 6:
+        treasure7.coordChange(xx,yy)
+        updateTre(6,treasure7)
+    elif counting == 7:
+        treasure8.coordChange(xx,yy)
+        updateTre(7,treasure8)
+    elif counting == 8:
+        treasure9.coordChange(xx,yy)
+        updateTre(8,treasure9)
+    elif counting == 9:
+        treasure10.coordChange(xx,yy)
+        updateTre(9,treasure10)
+    elif counting == 10:
+        treasure11.coordChange(xx,yy)
+        updateTre(10,treasure11)
+    elif counting == 11:
+        treasure12.coordChange(xx,yy)
+        updateTre(11,treasure12)
     return xx, yy
 
 btnRand=Button(root, text='Randomize', command=randCoord)
@@ -136,14 +254,6 @@ treasureValue.insert(2, 'Silver')
 treasureValue.insert(3, 'Gold')
 treasureValue.pack(side=LEFT)
 
-
-def newTre():
-    global i
-    global treasure1
-    treasure1.nextTre(i)
-    treasure1 = Treasure(360,240)
-    i+=1
-   # global tre1, tre2, tre3, tre4, tre5, tre6, tre7, tre8, tre9, tre10, tre11
 
 def varNext():
     global oneShot2
@@ -207,10 +317,11 @@ textWarning = canvas.create_text(600, 40, anchor=NE, text=".", fill='black')
 
 #Start Robot and Timer#
 def displayUFO():
+    global treList
     Timer1=Timer(root)
     Timer1.pack()
     Timer1.Start()
-    robot1 = Robot(20,20)
+    robot1 = Robot(20,20,treList)
     robot1.movement(canvas)
 
 Button(text="Start", cursor="trek", command=displayUFO).pack(side=LEFT, padx=20, pady=5)
@@ -299,7 +410,8 @@ class Timer(Frame):
 class Robot(object):
 
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, treList):
+        self.treList = treList
         self.q = -1
         self.obnum = 5-1
         self.x = x
@@ -331,21 +443,21 @@ class Robot(object):
 
     ##The search method decides what LandMarks need to be visited and avoided
     def search(self):
-        self.q += 1
 
-
-        ###this needs work
-
-        
-        LMcoordtemp = treList[self.q].givecoords()
-        destx = LMcoordtemp[2] - LMcoordtemp[0]
-        destx = destx/2
-        destx = destx+LMcoordtemp[0]
-        desty = LMcoordtemp[3] - LMcoordtemp[1]
-        desty = desty/2
-        desty = desty + LMcoordtemp[1]
-        self.destxy = [destx,desty]
-        self.search()
+        try:
+            self.q += 1
+            print self.q
+            LMcoordtemp = treList[self.q].givecoords()
+            destx = LMcoordtemp[2] - LMcoordtemp[0]
+            destx = destx/2
+            destx = destx+LMcoordtemp[0]
+            desty = LMcoordtemp[3] - LMcoordtemp[1]
+            desty = desty/2
+            desty = desty + LMcoordtemp[1]
+            self.destxy = [destx,desty]
+            self.search()
+        except IndexError:
+            print self.q
 
     ##Not really used finds the center on the robots oval
     def returncenter(self):
@@ -398,7 +510,7 @@ class Robot(object):
             #print dist
             i+= 1
             sum1 = self.vec1.unit()
-            self.LookAhead()
+            #self.LookAhead()
             
 ##################################################################
                 
@@ -550,8 +662,8 @@ class LandMark:
     
     def CreateLM(self):
         canvas.create_rectangle(self.x,self.x1,self.y,self.y1,fill = self.colour)        
-    def givecoords(self):
-        return self.x,self.x1,self.y,self.y1
+   # def givecoords(self):
+      #  return self.x,self.x1,self.y,self.y1
 
     def havetresure(self):
         if self.visitmaybe == True:
@@ -600,3 +712,4 @@ class vector():
 
 
 root.mainloop()
+
