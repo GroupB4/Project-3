@@ -103,13 +103,13 @@ def Selection():
             print "please choose an option"
         else:
             selection = amountTreasure.curselection()
-            if selection == (0,):
+            if selection == ('0',):
                 varTreasure+=2
-            elif selection == (1,):
+            elif selection == ('1',):
                 varTreasure+=4
-            elif selection == (2,):
+            elif selection == ('2',):
                 varTreasure+=6
-            elif selection == (3,):
+            elif selection == ('3',):
                 varTreasure+=10
     return varTreasure, treasure1
 
@@ -283,11 +283,11 @@ def varNext():
     treVar = treasureValue.curselection()
     if treasureValue.curselection() == ():
         print "Please select the value for the treasure"
-    elif treVar == (0,):
+    elif treVar == ('0',):
         treVal = 1
-    elif treVar == (1,):
+    elif treVar == ('1',):
         treVal = 2
-    elif treVar == (2,):
+    elif treVar == ('2',):
         treVal = 3
     if first == False:
         treasure1.val = treVal
