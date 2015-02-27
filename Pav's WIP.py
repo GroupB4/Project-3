@@ -317,7 +317,7 @@ def varNext():
         else:
             treasureList.insert(oneShot2, treVal)
             newTre()
-    return oneShot2, treVal
+    return oneShot2, treVal, varTreasure
    
 buttonNext=Button(root, text='Next', command=varNext)
 buttonNext.pack(side=LEFT)
@@ -445,7 +445,8 @@ class Robot(object):
         self.valX = False
         self.valY = False
         self.rotated = False
-
+        self.stillSearch = True
+        self.ic = 0
         self.search()
 
         robotimage_url = "http://i.imgur.com/zR2sDWw.gif"
@@ -455,7 +456,30 @@ class Robot(object):
         self.id1 = canvas.create_image(self.x,self.y, image=self.photo2)
         canvas.update()
 
-    def search(self):
+    def EndCheck(self):
+        self.ic+=1
+        print self.ic
+        if varTreasure == 3:
+            if self.ic == 3:
+                self.stillSearch = False
+            else:
+                self.search()
+        if varTreasure == 5:
+            if self.ic == 5:
+                self.stillSearch = False
+            else:
+                self.search()
+        if varTreasure == 7:
+            if self.ic == 7:
+                self.stillSearch = False
+            else:
+                self.search()
+        if varTreasure == 11:
+            if self.ic == 11:
+                self.stillSearch = False
+            else:
+                self.search()
+    def search(self):  
         try:
             self.q += 1
             LMcoordtemp = treList[self.q].givecoords()
@@ -488,9 +512,9 @@ class Robot(object):
         dest = self.destxy
         self.current_coord = (self.x,self.y)
 
-        while 1==1:
+        while self.stillSearch == True:
             if self.valX == True and self.valY == True:
-                self.search()
+                self.EndCheck()
                 treDesc()
                 dest = self.destxy
                 self.valX = False
