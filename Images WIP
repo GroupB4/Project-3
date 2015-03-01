@@ -351,7 +351,7 @@ def displayUFO():
     robot1 = Robot(20,20,treList)
     robot1.movement(canvas)
 
-Button(text="Start", cursor="trek", command=displayUFO).pack(side=LEFT, padx=20, pady=5)
+Button(text="Start", command=displayUFO).pack(side=LEFT, padx=20, pady=5)
 
 #Stop Timer#
 def END():
@@ -359,7 +359,7 @@ def END():
     Timer1.pack()
     Timer1.Stop()
 
-Button(text="Stop", cursor="trek", command=END).pack(side=LEFT, padx=0, pady=5)
+Button(text="Stop", command=END).pack(side=LEFT, padx=0, pady=5)
 
 #Exit Program#
 def Exit():
@@ -367,7 +367,7 @@ def Exit():
         if tkMessageBox.askokcancel("Exit", "Really?"):
             root.destroy()
 
-Button(text="Exit", cursor="trek", command=Exit).pack(side=RIGHT, padx=20, pady=5)
+Button(text="Exit", command=Exit).pack(side=RIGHT, padx=20, pady=5)
 
 ###----------Timer----------###
 
@@ -493,11 +493,11 @@ class Robot(object):
             destxx+=20
             destyy = LMcoordtemp[1]
             destyy+=20
-            destxx2 = LMcoordtemp[2]
-            destxx2-=20
-            destyy2 = LMcoordtemp[3]
-            destyy2-=20
-            self.destxy = [destxx, destyy, destxx2, destyy2]
+            #destxx2 = LMcoordtemp[2]
+            #destxx2-=20
+            #destyy2 = LMcoordtemp[3]
+            #destyy2-=20
+            self.destxy = [destxx, destyy]
         except IndexError:
             pass
         
@@ -607,4 +607,3 @@ class Robot(object):
 
 
 root.mainloop()
-
