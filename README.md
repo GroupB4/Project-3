@@ -1,10 +1,10 @@
-James Payne: Project Manager and lead programmer (steering implementation)
+James Payne: Project Manager and lead programmer 
 
-Jake Pulley: Programmer (steering implementation)
+Jake Pulley: Programmer
 
 Jay Naik: UI Design & Programmer
 
-Olivia Qader: Programmer (steering implementation)
+Olivia Qader: Programmer
 
 Hadiyah Mughal: UI Design & Programmer
 
