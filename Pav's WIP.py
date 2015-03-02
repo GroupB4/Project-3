@@ -4,7 +4,7 @@ import time
 import random
 import io
 import base64
-import tkMessageBox
+import tkMessageBox 
 import Tkinter as tk
 from urllib2 import urlopen
 xx = 360
@@ -26,20 +26,29 @@ oneShot = 0
 global oneShot
 oneShot2 = 0
 global oneShot2
+global placementXX, placementYY
 global counting
 global i
 i=1
 counting = 0
 root = Tk()
-root.title("Virtual Robot Treasure Hunt")
+'''
+def callback(event):
+    global placementXX, placementYY
+    print "clicked at", event.x, event.y
+    placementXX = event.x
+    placementYY = event.y
+    return placementXX, placementYY
+ '''   
+root.title("Vladimir's Conquest")
 
-image_url = "http://i.imgur.com/Q9VXPIw.gif"
+image_url = "http://i.imgur.com/gqL0Q5z.gif"
 image_byt = urlopen(image_url).read()
 image_b64 = base64.encodestring(image_byt)
 photo = tk.PhotoImage(data=image_b64)
 
 canvas=Canvas(root,width = 650, height = 650)
-
+#canvas.bind("<Button-1>", callback)
 xpos = 0
 ypos = 0
 canvas.create_image(xpos, ypos, image=photo)
@@ -70,7 +79,52 @@ class Treasure(object):
         self.center = self.xx + self.rx, self.yy + self.ry
         return self.center
 
-    
+def PlaceOB(event):
+    global placementXX, placementYY
+    placementXX = event.x
+    placementYY = event.y
+    global treasure1, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7, treasure8, treasure9, treasure10, treasure11, treasure12
+    global counting
+    #global treVal
+    counting+=1
+    global oneShot2
+    if counting == 1:
+        treasure1 = Treasure(placementXX, placementYY)
+        nextTreasure(treasure1)
+    elif counting == 2:
+        treasure2 = Treasure(placementXX, placementYY)
+        nextTreasure(treasure2)
+    elif counting == 3:
+        treasure3 = Treasure(placementXX, placementYY)
+        nextTreasure(treasure3)
+    elif counting == 4:
+        treasure4 = Treasure(placementXX, placementYY)
+        nextTreasure(treasure4)
+    elif counting == 5:
+        treasure5 = Treasure(placementXX, placementYY)
+        nextTreasure(treasure5)
+    elif counting == 6:
+        treasure6 = Treasure(placementXX, placementYY)
+        nextTreasure(treasure6)
+    elif counting == 7:
+        treasure7 = Treasure(placementXX, placementYY)
+        nextTreasure(treasure7)
+    elif counting == 8:
+        treasure8 = Treasure(placementXX, placementYY)
+        nextTreasure(treasure8)
+    elif counting == 9:
+        treasure9 = Treasure(placementXX, placementYY)
+        nextTreasure(treasure9)
+    elif counting == 10:
+        treasure10 = Treasure(placementXX, placementYY)
+        nextTreasure(treasure10)
+    elif counting == 11:
+        treasure11 = Treasure(placementXX, placementYY)
+        nextTreasure(treasure11)
+    return counting
+
+canvas.bind("<Button-1>", PlaceOB)
+
 def updateTre(i,storeTre2):
     treList.insert(i,storeTre2)
     return treList
@@ -80,7 +134,7 @@ def nextTreasure(storeTre):
     treList.append(storeTre)
     print treList
     return treList
-
+'''
 amountTreasure=Listbox(root, selectmode=SINGLE, width=10, height=4)
 amountTreasure.insert(1, '3 Treasure')
 amountTreasure.insert(2, '5 Treasure')
@@ -103,13 +157,13 @@ def Selection():
             print "please choose an option"
         else:
             selection = amountTreasure.curselection()
-            if selection == ('0',):
+            if selection == (0,):
                 varTreasure+=2
-            elif selection == ('1',):
+            elif selection == (1,):
                 varTreasure+=4
-            elif selection == ('2',):
+            elif selection == (2,):
                 varTreasure+=6
-            elif selection == ('3',):
+            elif selection == (3,):
                 varTreasure+=10
     return varTreasure, treasure1
 
@@ -283,11 +337,11 @@ def varNext():
     treVar = treasureValue.curselection()
     if treasureValue.curselection() == ():
         print "Please select the value for the treasure"
-    elif treVar == ('0',):
+    elif treVar == (0,):
         treVal = 1
-    elif treVar == ('1',):
+    elif treVar == (1,):
         treVal = 2
-    elif treVar == ('2',):
+    elif treVar == (2,):
         treVal = 3
     if first == False:
         treasure1.val = treVal
@@ -328,7 +382,7 @@ wishlist.insert(2, 'Bronze')
 wishlist.insert(3, 'Silver')
 wishlist.insert(4, 'Gold')
 wishlist.pack(side=LEFT)
-
+'''
 greenTraffic = canvas.create_oval(3,29,3+10,29+10,fill = 'green')
 amberTraffic = canvas.create_oval(3,17,3+10,17+10,fill = 'black')
 redTraffic = canvas.create_oval(3,5,3+10,5+10,fill = 'black')
@@ -415,12 +469,18 @@ class Timer(Frame):
 
 def treDesc():
     itn = random.randint(0, 5)
-        #if itn == 0:
-        #    xXx1337h4x0rzxXx = "You have discovered Mechatite, an expensive and rare material"
-        #elif itn == 1:
-        #    xXx1337h4x0rzxXx = "Upon searching the planet, you have discovered an ancient relic from the extinct natives of the planet"
-        #elif itn == 2:
-    xXx1337h4x0rzxXx = "You have discovered all the fucks i give for project 3... non!"
+    if itn == 0:
+        xXx1337h4x0rzxXx = "You have conquered Kiev!!!"
+    elif itn == 1:
+        xXx1337h4x0rzxXx = "You have annihilated Dnipropetrovsk"
+    elif itn == 2:
+        xXx1337h4x0rzxXx = "You just made Chenobryl your bitch"
+    elif itn == 3:
+        xXx1337h4x0rzxXx = "Odessa is now under the rule of putin!!!"
+    elif itn == 4:
+        xXx1337h4x0rzxXx = "Lviv is now under the command of Putin!!!"
+    elif itn == 5:
+        xXx1337h4x0rzxXx = "More gold to add to the stockpile!!!"
     if tkMessageBox.showinfo("Treasure Found", xXx1337h4x0rzxXx):
         pass
             
@@ -448,8 +508,10 @@ class Robot(object):
         self.stillSearch = True
         self.ic = 0
         self.search()
+        self.varTreasure = len(self.treList)
+        print self.varTreasure
 
-        robotimage_url = "http://i.imgur.com/zR2sDWw.gif"
+        robotimage_url = "http://i.imgur.com/1AaKbvj.gif"
         image2_byt = urlopen(robotimage_url).read()
         image2_b64 = base64.encodestring(image2_byt)
         self.photo2 = tk.PhotoImage(data=image2_b64)
@@ -459,26 +521,11 @@ class Robot(object):
     def EndCheck(self):
         self.ic+=1
         print self.ic
-        if varTreasure == 3:
-            if self.ic == 3:
-                self.stillSearch = False
-            else:
-                self.search()
-        if varTreasure == 5:
-            if self.ic == 5:
-                self.stillSearch = False
-            else:
-                self.search()
-        if varTreasure == 7:
-            if self.ic == 7:
-                self.stillSearch = False
-            else:
-                self.search()
-        if varTreasure == 11:
-            if self.ic == 11:
-                self.stillSearch = False
-            else:
-                self.search()
+        if self.ic == self.varTreasure:
+            self.stillSearch = False
+        else:
+            self.search()
+                
     def search(self):  
         try:
             self.q += 1
@@ -582,14 +629,14 @@ class Robot(object):
                 canvas.itemconfigure(greenTraffic, fill = 'black')
                 canvas.itemconfigure(redTraffic, fill = 'black')
                 sleeping = 2
-                canvas.itemconfigure(textWarning, text="Meteor shower incoming!!!", fill='white')
+                canvas.itemconfigure(textWarning, text="Military checkpoint incoming!!!", fill='white')
             
             elif lightchange == 3:
                 canvas.itemconfigure(greenTraffic, fill = 'black')
                 canvas.itemconfigure(amberTraffic, fill = 'black')
                 canvas.itemconfigure(redTraffic, fill = 'red')
                 sleeping = 3
-                canvas.itemconfigure(textWarning, text="Meteor shower in effect!!!", fill='white')
+                canvas.itemconfigure(textWarning, text="Military checkpoint", fill='white')
                 print "Stop"
 
             elif lightchange == 4:
