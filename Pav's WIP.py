@@ -201,6 +201,17 @@ def nextTreasure(storeTre):
     treList.append(storeTre)
     return treList
 
+def bubbleSort(treList):
+    print treList
+    for passnum in range(len(treList)-1,0,-1):
+        for i in range(passnum):
+            if treList[i].val>treList[i+1].val:
+                temp = treList[i]
+                treList[i] = treList[i+1]
+                treList[i+1] = temp
+    print treList
+    return treList
+
 greenTraffic = canvas.create_oval(3,29,3+10,29+10,fill = 'green')
 amberTraffic = canvas.create_oval(3,17,3+10,17+10,fill = 'black')
 redTraffic = canvas.create_oval(3,5,3+10,5+10,fill = 'black')
@@ -211,6 +222,8 @@ textWarning = canvas.create_text(600, 40, anchor=NE, text=".", fill='black')
 
 #Start Robot and Timer#
 def displayUFO():
+    global treList
+    bubbleSort(treList)
     Timer1=Timer(root)
     Timer1.pack()
     Timer1.Start()
