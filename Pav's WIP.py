@@ -78,26 +78,7 @@ class Treasure(object):
 
     def giveDict(self):
         return treList
-'''
-    def changeVal(self, tempx, tempy):
-        self.tempx=tempx
-        self.tempy=tempy
-        self.icc+=1
-        if self.icc == 1:
-            self.col = 'orange'
-            print(self.treName + " now has the value of 1")
-            print self.val
-            self.val = 1
-        elif self.icc == 2:
-            self.col = 'grey'
-            print(self.treName + " now has the value of 2")
-            self.val = 2
-        elif self.icc == 3:
-            self.col = 'yellow'
-            print(self.treName + " now has the value of 2")
-            self.icc = 0
-            self.val = 3
-'''
+
 def PlaceOB(event):
     global placementXX, placementYY
     placementXX = event.x
@@ -105,7 +86,6 @@ def PlaceOB(event):
     global treasure1, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7, treasure8, treasure9, treasure10, treasure11, treasure12
     global counting
     global canPlace
-    #global treVal
     counting+=1
     global oneShot2
     chkOverlap()
@@ -163,7 +143,6 @@ def chkCoords():
             if placementXX > strTemp[0] and placementXX < strTemp[2]:
                 if placementYY > strTemp[1] and placementYY < strTemp[3]:
                     changeVal()
-                    #treList[ic1].changeVal(strTemp[0], strTemp[1])
                     treList[ic1].val = val
     except IndexError:
         pass
@@ -174,12 +153,18 @@ def changeVal():
     icc+=1
     if icc == 1:
         print("Treasure now has the value of 1")
+        if tkMessageBox.showinfo("Treasure Value Changed!", "The value of this treasure is now 1"):
+            pass
         val = 1
     elif icc == 2:
         print("Treasure now has the value of 2")
+        if tkMessageBox.showinfo("Treasure Value Changed!", "The value of this treasure is now 2"):
+            pass
         val = 2
     elif icc == 3:
         print("Treasure now has the value of 3")
+        if tkMessageBox.showinfo("Treasure Value Changed!", "The value of this treasure is now 3"):
+            pass
         icc = 0
         val = 3
     return val
@@ -476,7 +461,5 @@ class Robot(object):
                 canvas.itemconfigure(greenTraffic, fill = 'black')
                 canvas.itemconfigure(redTraffic, fill = 'red')
                 sleeping = 2
-
-
 
 root.mainloop()
