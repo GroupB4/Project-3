@@ -9,10 +9,17 @@ import Tkinter as tk
 from urllib2 import urlopen
 xx = 360
 yy = 240
-global xx
-global yy
+global xx, xx2
+global canPlace
+canPlace = True
+global yy, yy2
+global icc
+icc = 0
 global first
+global ic1
+ic1 = -1
 global treVal
+global val
 treVal = 0
 first = False
 global coord1
@@ -32,14 +39,6 @@ global i
 i=1
 counting = 0
 root = Tk()
-'''
-def callback(event):
-    global placementXX, placementYY
-    print "clicked at", event.x, event.y
-    placementXX = event.x
-    placementYY = event.y
-    return placementXX, placementYY
- '''   
 root.title("Vladimir's Conquest")
 
 image_url = "http://i.imgur.com/gqL0Q5z.gif"
@@ -48,80 +47,163 @@ image_b64 = base64.encodestring(image_byt)
 photo = tk.PhotoImage(data=image_b64)
 
 canvas=Canvas(root,width = 650, height = 650)
-#canvas.bind("<Button-1>", callback)
 xpos = 0
 ypos = 0
 canvas.create_image(xpos, ypos, image=photo)
 canvas.pack()
 
 class Treasure(object):
-    def __init__(self,xx,yy):
+    def __init__(self,xx,yy,treName):
         self.treList = []
         self.xx=xx
+        self.treName=treName
         self.val = 0
         self.yy=yy
-        self.tre = canvas.create_rectangle(self.xx,self.yy,self.xx+50,self.yy+50,fill='white')
+        self.icc = 0
+        self.col = 'white'
+        self.tre = canvas.create_rectangle(self.xx,self.yy,self.xx+50,self.yy+50,fill=self.col)
 
     def givecoords(self):
         self.xx2 = self.xx+50
         self.yy2 = self.yy+50
+        xx = self.xx
+        yy = self.yy
         return self.xx,self.yy,self.xx2,self.yy2
     
-    def coordChange(self,xx,yy):
-        self.xx=xx
-        self.yy=yy
-        canvas.coords(self.tre,self.xx,self.yy,self.xx+50,self.yy+50)
-        canvas.update()
-
     def returnCenter(self):
         self.rx = (self.xx - self.xx2)/2
         self.ry = (self.yy - self.yy2)/2
         self.center = self.xx + self.rx, self.yy + self.ry
         return self.center
 
+    def giveDict(self):
+        return treList
+'''
+    def changeVal(self, tempx, tempy):
+        self.tempx=tempx
+        self.tempy=tempy
+        self.icc+=1
+        if self.icc == 1:
+            self.col = 'orange'
+            print(self.treName + " now has the value of 1")
+            print self.val
+            self.val = 1
+        elif self.icc == 2:
+            self.col = 'grey'
+            print(self.treName + " now has the value of 2")
+            self.val = 2
+        elif self.icc == 3:
+            self.col = 'yellow'
+            print(self.treName + " now has the value of 2")
+            self.icc = 0
+            self.val = 3
+'''
 def PlaceOB(event):
     global placementXX, placementYY
     placementXX = event.x
     placementYY = event.y
     global treasure1, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7, treasure8, treasure9, treasure10, treasure11, treasure12
     global counting
+    global canPlace
     #global treVal
     counting+=1
     global oneShot2
-    if counting == 1:
-        treasure1 = Treasure(placementXX, placementYY)
-        nextTreasure(treasure1)
-    elif counting == 2:
-        treasure2 = Treasure(placementXX, placementYY)
-        nextTreasure(treasure2)
-    elif counting == 3:
-        treasure3 = Treasure(placementXX, placementYY)
-        nextTreasure(treasure3)
-    elif counting == 4:
-        treasure4 = Treasure(placementXX, placementYY)
-        nextTreasure(treasure4)
-    elif counting == 5:
-        treasure5 = Treasure(placementXX, placementYY)
-        nextTreasure(treasure5)
-    elif counting == 6:
-        treasure6 = Treasure(placementXX, placementYY)
-        nextTreasure(treasure6)
-    elif counting == 7:
-        treasure7 = Treasure(placementXX, placementYY)
-        nextTreasure(treasure7)
-    elif counting == 8:
-        treasure8 = Treasure(placementXX, placementYY)
-        nextTreasure(treasure8)
-    elif counting == 9:
-        treasure9 = Treasure(placementXX, placementYY)
-        nextTreasure(treasure9)
-    elif counting == 10:
-        treasure10 = Treasure(placementXX, placementYY)
-        nextTreasure(treasure10)
-    elif counting == 11:
-        treasure11 = Treasure(placementXX, placementYY)
-        nextTreasure(treasure11)
-    return counting
+    chkOverlap()
+    if canPlace == False:
+        chkCoords()
+    else: 
+        if counting == 1:
+            treasure1 = Treasure(placementXX, placementYY, 'Treasure 1')
+            nextTreasure(treasure1)
+        elif counting == 2:
+            treasure2 = Treasure(placementXX, placementYY, 'Treasure 2')
+            nextTreasure(treasure2)
+        elif counting == 3:
+            treasure3 = Treasure(placementXX, placementYY, 'Treasure 3')
+            nextTreasure(treasure3)
+        elif counting == 4:
+            treasure4 = Treasure(placementXX, placementYY, 'Treasure 4')
+            nextTreasure(treasure4)
+        elif counting == 5:
+            treasure5 = Treasure(placementXX, placementYY, 'Treasure 5')
+            nextTreasure(treasure5)
+        elif counting == 6:
+            treasure6 = Treasure(placementXX, placementYY, 'Treasure 6')
+            nextTreasure(treasure6)
+        elif counting == 7:
+            treasure7 = Treasure(placementXX, placementYY, 'Treasure 7')
+            nextTreasure(treasure7)
+        elif counting == 8:
+            treasure8 = Treasure(placementXX, placementYY, 'Treasure 8')
+            nextTreasure(treasure8)
+        elif counting == 9:
+            treasure9 = Treasure(placementXX, placementYY, 'Treasure 9')
+            nextTreasure(treasure9)
+        elif counting == 10:
+            treasure10 = Treasure(placementXX, placementYY, 'Treasure 10')
+            nextTreasure(treasure10)
+        elif counting == 11:
+            treasure11 = Treasure(placementXX, placementYY, 'Treasure 11')
+            nextTreasure(treasure11)
+        #chkCoords()
+    return counting, placementXX, placementYY
+
+def chkCoords():
+    global val
+    global treList
+    global ic1
+    global placementXX, placementYY
+    str1 = len(treList)
+    ic1 = -1
+    try:
+        for t in range(0, str1):
+            ic1+=1
+            strTemp = []
+            strTemp = treList[ic1].givecoords()
+            if placementXX > strTemp[0] and placementXX < strTemp[2]:
+                if placementYY > strTemp[1] and placementYY < strTemp[3]:
+                    changeVal()
+                    #treList[ic1].changeVal(strTemp[0], strTemp[1])
+                    treList[ic1].val = val
+    except IndexError:
+        pass
+    
+def changeVal():
+    global icc
+    global val
+    icc+=1
+    if icc == 1:
+        print("Treasure now has the value of 1")
+        val = 1
+    elif icc == 2:
+        print("Treasure now has the value of 2")
+        val = 2
+    elif icc == 3:
+        print("Treasure now has the value of 3")
+        icc = 0
+        val = 3
+    return val
+
+def chkOverlap():
+    global treList
+    global ic1
+    global nextTre
+    global canPlace
+    global placementXX, placementYY
+    canPlace = True
+    str1 = len(treList)
+    ic1 = -1
+    try:
+        for t in range(0, str1):
+            ic1+=1
+            strTemp = []
+            strTemp = treList[ic1].givecoords()
+            if placementXX > strTemp[0] and placementXX < strTemp[2]:
+                if placementYY > strTemp[1] and placementYY < strTemp[3]:
+                    canPlace = False
+    except IndexError:
+            pass
+    return canPlace
 
 canvas.bind("<Button-1>", PlaceOB)
 
@@ -132,257 +214,8 @@ def updateTre(i,storeTre2):
 def nextTreasure(storeTre):
     global treList
     treList.append(storeTre)
-    print treList
     return treList
-'''
-amountTreasure=Listbox(root, selectmode=SINGLE, width=10, height=4)
-amountTreasure.insert(1, '3 Treasure')
-amountTreasure.insert(2, '5 Treasure')
-amountTreasure.insert(3, '7 Treasure')
-amountTreasure.insert(4, '11 Treasure')
-amountTreasure.pack(side=LEFT)
-global treasure1
-treasure1 = Treasure(360,240)
 
-def Selection():
-    global oneShot
-    oneShot+=1
-    global varTreasure
-    varTreasure = 1
-    global i
-    if oneShot>1:
-        print "Your choice has already been made"
-    else:
-        if amountTreasure.curselection() == ():
-            print "please choose an option"
-        else:
-            selection = amountTreasure.curselection()
-            if selection == (0,):
-                varTreasure+=2
-            elif selection == (1,):
-                varTreasure+=4
-            elif selection == (2,):
-                varTreasure+=6
-            elif selection == (3,):
-                varTreasure+=10
-    return varTreasure, treasure1
-
-buttonSelect=Button(root, text='confirm', command=Selection)
-buttonSelect.pack(side=LEFT)
-
-coord1 = Spinbox(root, from_=0, to=640, width=4)
-coord1.pack(side=LEFT)
-coord2 = Spinbox(root, from_=0, to=640, width=4)
-coord2.pack(side=LEFT)
-
-def newTre():
-    global treasure1, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7, treasure8, treasure9, treasure10, treasure11, treasure12
-    global counting
-    global treVal
-    counting+=1
-    global oneShot2
-    if counting == 1:
-        nextTreasure(treasure1)
-        treasure2 = Treasure(360,240)
-    elif counting == 2:
-        nextTreasure(treasure2)
-        treasure2.val = treVal
-        treasure3 = Treasure(360,240)
-    elif counting == 3:
-        nextTreasure(treasure3)
-        treasure3.val = treVal
-        treasure4 = Treasure(360,240)
-    elif counting == 4:
-        nextTreasure(treasure4)
-        treasure4.val = treVal
-        treasure5 = Treasure(360,240)
-    elif counting == 5:
-        nextTreasure(treasure5)
-        treasure5.val = treVal
-        treasure6 = Treasure(360,240)
-    elif counting == 6:
-        nextTreasure(treasure6)
-        treasure6.val = treVal
-        treasure7 = Treasure(360,240)
-    elif counting == 7:
-        nextTreasure(treasure7)
-        treasure7.val = treVal
-        treasure8 = Treasure(360,240)
-    elif counting == 8:
-        nextTreasure(treasure8)
-        treasure8.val = treVal
-        treasure9 = Treasure(360,240)
-    elif counting == 9:
-        nextTreasure(treasure9)
-        treasure9.val = treVal
-        treasure10 = Treasure(360,240)
-    elif counting == 10:
-        nextTreasure(treasure10)
-        treasure10.val = treVal
-        treasure11 = Treasure(360,240)
-    elif counting == 11:
-        nextTreasure(treasure11)
-        treasure11.val = treVal
-        treasure12 = Treasure(360,240)
-    return counting
-
-def coordSet():
-    xx = coord1.get()
-    yy = coord2.get()
-    xx = int(xx)
-    yy = int(yy)
-    if xx>640:
-        print "invalid x coordinate"
-    elif yy>640:
-        print "invalid y coordinate"
-    else:
-        if counting == 0:
-            treasure1.coordChange(xx,yy)
-            updateTre(0,treasure1)
-        elif counting == 1:
-            treasure2.coordChange(xx,yy)
-            updateTre(1,treasure2)
-        elif counting == 2:
-            treasure3.coordChange(xx,yy)
-            updateTre(2,treasure3)
-        elif counting == 3:
-            treasure4.coordChange(xx,yy)
-            updateTre(3,treasure4)
-        elif counting == 4:
-            treasure5.coordChange(xx,yy)
-            updateTre(4,treasure5)
-        elif counting == 5:
-            treasure6.coordChange(xx,yy)
-            updateTre(5,treasure6)
-        elif counting == 6:
-            treasure7.coordChange(xx,yy)
-            updateTre(6,treasure7)
-        elif counting == 7:
-            treasure8.coordChange(xx,yy)
-            updateTre(7,treasure8)
-        elif counting == 8:
-            treasure9.coordChange(xx,yy)
-            updateTre(8,treasure9)
-        elif counting == 9:
-            treasure10.coordChange(xx,yy)
-            updateTre(9,treasure10)
-        elif counting == 10:
-            treasure11.coordChange(xx,yy)
-            updateTre(10,treasure11)
-        elif counting == 11:
-            treasure12.coordChange(xx,yy)
-            updateTre(11,treasure12)
-        return xx, yy
-
-buttonSet=Button(root, text='set', command=coordSet)
-buttonSet.pack(side=LEFT)
-
-def randCoord():
-    xx = random.randint(0, 640)
-    yy = random.randint(0, 640)
-    if counting == 0:
-        treasure1.coordChange(xx,yy)
-        updateTre(0,treasure1)
-    elif counting == 1:
-        treasure2.coordChange(xx,yy)
-        updateTre(1,treasure2)
-    elif counting == 2:
-        treasure3.coordChange(xx,yy)
-        updateTre(2,treasure3)
-    elif counting == 3:
-        treasure4.coordChange(xx,yy)
-        updateTre(3,treasure4)
-    elif counting == 4:
-        treasure5.coordChange(xx,yy)
-        updateTre(4,treasure5)
-    elif counting == 5:
-        treasure6.coordChange(xx,yy)
-        updateTre(5,treasure6)
-    elif counting == 6:
-        treasure7.coordChange(xx,yy)
-        updateTre(6,treasure7)
-    elif counting == 7:
-        treasure8.coordChange(xx,yy)
-        updateTre(7,treasure8)
-    elif counting == 8:
-        treasure9.coordChange(xx,yy)
-        updateTre(8,treasure9)
-    elif counting == 9:
-        treasure10.coordChange(xx,yy)
-        updateTre(9,treasure10)
-    elif counting == 10:
-        treasure11.coordChange(xx,yy)
-        updateTre(10,treasure11)
-    elif counting == 11:
-        treasure12.coordChange(xx,yy)
-        updateTre(11,treasure12)
-    return xx, yy
-
-btnRand=Button(root, text='Randomize', command=randCoord)
-btnRand.pack(side=LEFT)
-
-treasureValue=Listbox(root, selectmode=SINGLE, width=6, height=3)
-treasureValue.insert(1, 'Bronze')
-treasureValue.insert(2, 'Silver')
-treasureValue.insert(3, 'Gold')
-treasureValue.pack(side=LEFT)
-
-def varNext():
-    print treasure1.givecoords()
-    global oneShot2
-    global treasureList
-    global first
-    oneShot2+=1
-    treVal = 0
-    treVar = treasureValue.curselection()
-    if treasureValue.curselection() == ():
-        print "Please select the value for the treasure"
-    elif treVar == (0,):
-        treVal = 1
-    elif treVar == (1,):
-        treVal = 2
-    elif treVar == (2,):
-        treVal = 3
-    if first == False:
-        treasure1.val = treVal
-        print treasure1.val
-        first = True
-    if varTreasure == 3:
-        if oneShot2>2:
-            print "Press start to begin"
-        else:
-            treasureList.insert(oneShot2, treVal)
-            newTre()
-    if varTreasure == 5:
-        if oneShot2>4:
-            print "Press start to begin"
-        else:
-            treasureList.insert(oneShot2, treVal)
-            newTre()
-    if varTreasure == 7:
-        if oneShot2>6:
-            print "Press start to begin"
-        else:
-            treasureList.insert(oneShot2, treVal)
-            newTre()
-    if varTreasure == 11:
-        if oneShot2>10:
-            print "Press start to begin"
-        else:
-            treasureList.insert(oneShot2, treVal)
-            newTre()
-    return oneShot2, treVal, varTreasure
-   
-buttonNext=Button(root, text='Next', command=varNext)
-buttonNext.pack(side=LEFT)
-
-wishlist = Listbox(root, selectmode=MULTIPLE, width=11, height=4)
-wishlist.insert(1, '-WISHLIST-')
-wishlist.insert(2, 'Bronze')
-wishlist.insert(3, 'Silver')
-wishlist.insert(4, 'Gold')
-wishlist.pack(side=LEFT)
-'''
 greenTraffic = canvas.create_oval(3,29,3+10,29+10,fill = 'green')
 amberTraffic = canvas.create_oval(3,17,3+10,17+10,fill = 'black')
 redTraffic = canvas.create_oval(3,5,3+10,5+10,fill = 'black')
@@ -509,7 +342,6 @@ class Robot(object):
         self.ic = 0
         self.search()
         self.varTreasure = len(self.treList)
-        print self.varTreasure
 
         robotimage_url = "http://i.imgur.com/1AaKbvj.gif"
         image2_byt = urlopen(robotimage_url).read()
@@ -520,7 +352,7 @@ class Robot(object):
 
     def EndCheck(self):
         self.ic+=1
-        print self.ic
+
         if self.ic == self.varTreasure:
             self.stillSearch = False
         else:
