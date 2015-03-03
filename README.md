@@ -8,4 +8,4 @@ Olivia Qader: Programmer
 
 Hadiyah Mughal: UI Design & Programmer
 
-Pavilion Sahota: Sweg lord you fukin plebs (GUI Programmer)
+Pavilion Sahota: Sweg lord you fukin plebs (1337 Programmer)
