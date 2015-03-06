@@ -41,6 +41,46 @@ counting = 0
 root = Tk()
 root.title("Vladimir's Conquest")
 
+instructionTextOne = "Become Vladimir and conquer Russia!"
+instructionTextTwo = "Left click anywhere on the canvas to choose your destination. You can add as many destinations as you like.\
+Once you have placed as many destinations as you like, click 'Start'."
+
+
+
+
+def instructionsLink():
+    
+   instructionsWindow = Toplevel()
+
+   instructionsLabel = Label(instructionsWindow, text="Instructions", font="Stencil 20", bg="lightgreen", wraplength=250)
+   instructionsLabel.pack(side=TOP)
+   instructionsLabel = Label(instructionsWindow, text=instructionTextOne, wraplength=250)
+   instructionsLabel.pack(side=TOP)
+   instructionsLabel = Label(instructionsWindow, text=instructionTextTwo, wraplength=250)
+   instructionsLabel.pack(side=TOP)
+
+def descriptionsLink():
+
+   descriptionsWindow = Toplevel()
+   
+   descriptionsLabelOne = Label(descriptionsWindow, text="Destinations", font="Stencil 20", bg="lightgreen", wraplength=250)
+   descriptionsLabelOne.pack(side=TOP)
+   descriptionsLabelTwo = Label(descriptionsWindow, text="meh", wraplength=250)
+   descriptionsLabelTwo.pack(side=TOP)
+
+menubar = Menu(root)
+infomenu = Menu(menubar, tearoff=0)
+infomenu.add_command(label="Instructions", command=instructionsLink)
+infomenu.add_command(label="Destinations", command=descriptionsLink)
+menubar.add_cascade(label="Information", menu=infomenu)
+
+optionmenu = Menu(menubar, tearoff=0)
+optionmenu.add_command(label="Close", command=root.destroy)
+#editmenu.add_separator()
+menubar.add_cascade(label="Options", menu=optionmenu)
+
+root.config(menu=menubar)
+
 image_url = "http://i.imgur.com/gqL0Q5z.gif"
 image_byt = urlopen(image_url).read()
 image_b64 = base64.encodestring(image_byt)
