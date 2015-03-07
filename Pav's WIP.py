@@ -333,31 +333,23 @@ redTraffic = canvas.create_oval(3,5,3+10,5+10,fill = 'black')
 
 textWarning = canvas.create_text(600, 40, anchor=NE, text=".", fill='black')
 
+
+
 ###----------Buttons----------###
 
-#Start Robot and Timer#
+#Start Robot and CountdownTimer#
 def displayUFO():
     global once
     if once == True:
         once = False
         setTraps()
-        #Timer1=Timer(root)
-        #Timer1.pack()
-        #Timer1.Start()
+        DisplayTimer1=DisplayTimer()
         robot1 = Robot(20,20,treList)
         robot1.movement(canvas)
     else:
         pass
 
 Button(text="Start", cursor="trek", command=displayUFO).pack(side=LEFT, padx=20, pady=5)
-
-#Stop Timer#
-def END():
-    Timer1=Timer(root)
-    Timer1.pack()
-    Timer1.Stop()
-
-Button(text="Stop", cursor="trek", command=END).pack(side=LEFT, padx=0, pady=5)
 
 #Exit Program#
 def Exit():
@@ -367,55 +359,31 @@ def Exit():
 
 Button(text="Exit", cursor="trek", command=Exit).pack(side=RIGHT, padx=20, pady=5)
 
-###----------Timer----------###
 
-toolbar = Frame(root)
-toolbar.pack(side=BOTTOM, anchor=SW, padx=10, pady=5)
 
-class Timer(Frame):
+###----------CountdownTimer----------###
+class DisplayTimer(tk.Tk):
+    
+    def __init__(self):
+        tk.Tk.__init__(self)
+        self.label = Label(self, text="", font=('arial black', 25), width=8)
+        self.label.pack()
+        self.remaining = 0
+        self.countdowntimer(60)
 
-    #Implements timer widget#
-    def __init__(self, thing=None,*toolbar):
-        Frame.__init__(self, thing,toolbar)
-        self.start = 0
-        self.elapsedtime = 0
-        self.running = 0
-        self.timestr = StringVar()
-        self.timerwidget()
-        
-    #Timer widget on screen#
-    def timerwidget(self):
-        l = Label(self, textvariable=self.timestr)
-        self.settime(self.elapsedtime)
-        l.pack(padx=25, pady=14)
+    def countdowntimer(self, remaining = None):
+        if remaining is not None:
+            self.remaining = remaining
 
-    #Timer format in (00:00:00) = (Minutes : Seconds : Milliseconds)#
-    def settime(self, elaps):
-        minutes = int(elaps/60)
-        seconds = int(elaps - minutes*60)
-        milliseconds = int((elaps - minutes*60 - seconds)*100)
-        self.timestr.set('%02d:%02d:%02d'%(minutes, seconds, milliseconds))
-
-    #Makes timer work#
-    def update(self):
-        self.elapsedtime = time.time() - self.start
-        self.settime(self.elapsedtime)
-        self.timer = self.after(50, self.update)
-
-    #Starts timer#
-    def Start(self):
-        if not self.running:
-            self.start = time.time() - self.elapsedtime
-            self.update()
-            self.running = 1
-
-    #Stops timer#
-    def Stop(self):
-        if self.running:
-            self.after_cancel(self.timer)
-            self.elapsedtime = time.time() - self.start
-            self.settime(self.elapsedtime)
-            self.running = 0
+        if self.remaining <= 0:
+            self.label.configure(text="Time's Up!", font=('arial black', 25), fg='red')
+        else:
+            self.label.configure(text="%d" % self.remaining)
+            self.remaining = self.remaining - 1
+            self.after(1000, self.countdowntimer)
+            
+            
+            
 '''
 
     def check_if_trapped(self, xx, yy, xx1, yy1):
@@ -446,6 +414,8 @@ def treDesc():
         xXx1337h4x0rzxXx = "More gold to add to the stockpile!!!"
     if tkMessageBox.showinfo("Treasure Found", xXx1337h4x0rzxXx):
         pass
+           
+           
             
 ###----------Robot----------###
 class Robot(object):
