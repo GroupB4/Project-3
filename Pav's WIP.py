@@ -4,22 +4,35 @@ import time
 import random
 import io
 import base64
-import tkMessageBox 
+import tkMessageBox
+import copy
 import Tkinter as tk
 from urllib2 import urlopen
 xx = 360
 yy = 240
 global xx, xx2
+global skip
+global listOfPaths
+global trappedList
+trappedList = []
+listOfPaths = []
+skip = []
 global canPlace
+global colour
+colour = 'white'
 canPlace = True
 global yy, yy2
 global icc
+global treListIndex
+treListIndex = 0
 icc = 0
 global first
 global ic1
 ic1 = -1
 global treVal
 global val
+global once
+once = True
 treVal = 0
 first = False
 global coord1
@@ -40,33 +53,30 @@ i=1
 counting = 0
 root = Tk()
 root.title("Vladimir's Conquest")
-
+'''
 instructionTextOne = "Become Vladimir and conquer Russia!"
 instructionTextTwo = "Left click anywhere on the canvas to choose your destination. You can add as many destinations as you like.\
 Once you have placed as many destinations as you like, click 'Start'."
 
 
-
-
 def instructionsLink():
-    
-   instructionsWindow = Toplevel()
+    instructionsWindow = Toplevel()
 
-   instructionsLabel = Label(instructionsWindow, text="Instructions", font="Stencil 20", bg="lightgreen", wraplength=250)
-   instructionsLabel.pack(side=TOP)
-   instructionsLabel = Label(instructionsWindow, text=instructionTextOne, wraplength=250)
-   instructionsLabel.pack(side=TOP)
-   instructionsLabel = Label(instructionsWindow, text=instructionTextTwo, wraplength=250)
-   instructionsLabel.pack(side=TOP)
+    instructionsLabel = Label(instructionsWindow, text="Instructions", font="Stencil 20", bg="lightgreen", wraplength=250)
+    instructionsLabel.pack(side=TOP)
+    instructionsLabel = Label(instructionsWindow, text=instructionTextOne, wraplength=250)
+    instructionsLabel.pack(side=TOP)
+    instructionsLabel = Label(instructionsWindow, text=instructionTextTwo, wraplength=250)
+    instructionsLabel.pack(side=TOP)
 
 def descriptionsLink():
 
-   descriptionsWindow = Toplevel()
+    descriptionsWindow = Toplevel()
    
-   descriptionsLabelOne = Label(descriptionsWindow, text="Destinations", font="Stencil 20", bg="lightgreen", wraplength=250)
-   descriptionsLabelOne.pack(side=TOP)
-   descriptionsLabelTwo = Label(descriptionsWindow, text="meh", wraplength=250)
-   descriptionsLabelTwo.pack(side=TOP)
+    descriptionsLabelOne = Label(descriptionsWindow, text="Destinations", font="Stencil 20", bg="lightgreen", wraplength=250)
+    descriptionsLabelOne.pack(side=TOP)
+    descriptionsLabelTwo = Label(descriptionsWindow, text="meh", wraplength=250)
+    descriptionsLabelTwo.pack(side=TOP)
 
 menubar = Menu(root)
 infomenu = Menu(menubar, tearoff=0)
@@ -80,6 +90,7 @@ optionmenu.add_command(label="Close", command=root.destroy)
 menubar.add_cascade(label="Options", menu=optionmenu)
 
 root.config(menu=menubar)
+'''
 
 image_url = "http://i.imgur.com/gqL0Q5z.gif"
 image_byt = urlopen(image_url).read()
@@ -91,6 +102,23 @@ xpos = 0
 ypos = 0
 canvas.create_image(xpos, ypos, image=photo)
 canvas.pack()
+
+class Traps(object):
+    def __init__(self):
+        self.numX = 0
+        self.numY = 0
+        self.rand()
+        self.numXX = (self.numX+20)
+        self.numYY = (self.numY+20)
+        cl4pTP = canvas.create_rectangle(self.numX, self.numY, self.numXX, self.numYY, fill='blue')
+
+    def rand(self):
+        self.numX = random.randint(50, 600)
+        self.numY = random.randint(50, 600)
+        return self.numX, self.numY
+
+    def givecoords(self):
+        return self.numX, self.numY, self.numXX, self.numYY
 
 class Treasure(object):
     def __init__(self,xx,yy,treName):
@@ -116,6 +144,13 @@ class Treasure(object):
         self.center = self.xx + self.rx, self.yy + self.ry
         return self.center
 
+    def givedummy(self):
+        self.rcx = 5000
+        self.rcy = 5000
+        self.rxx = 5050
+        self.ryy = 5050
+        return self.rcx, self.rcy, self.rxx, self.ryy
+
     def giveDict(self):
         return treList
 
@@ -131,7 +166,9 @@ def PlaceOB(event):
     chkOverlap()
     if canPlace == False:
         chkCoords()
-    else: 
+    else:
+        placementXX-=25
+        placementYY-=25
         if counting == 1:
             treasure1 = Treasure(placementXX, placementYY, 'Treasure 1')
             nextTreasure(treasure1)
@@ -165,13 +202,15 @@ def PlaceOB(event):
         elif counting == 11:
             treasure11 = Treasure(placementXX, placementYY, 'Treasure 11')
             nextTreasure(treasure11)
-        #chkCoords()
+    placementXX+=25
+    placementYY+=25
     return counting, placementXX, placementYY
 
 def chkCoords():
     global val
     global treList
     global ic1
+    global colour
     global placementXX, placementYY
     str1 = len(treList)
     ic1 = -1
@@ -184,30 +223,39 @@ def chkCoords():
                 if placementYY > strTemp[1] and placementYY < strTemp[3]:
                     changeVal()
                     treList[ic1].val = val
+                    canvas.itemconfigure(treList[ic1].tre, fill = colour)
+                    canvas.update()
     except IndexError:
         pass
-    
+
+lstCol = Listbox(root, selectmode=SINGLE)
+lstCol.pack(side=LEFT)
+
 def changeVal():
     global icc
     global val
+    global colour
     icc+=1
     if icc == 1:
         print("Treasure now has the value of 1")
-        if tkMessageBox.showinfo("Treasure Value Changed!", "The value of this treasure is now 1"):
-            pass
+        #if tkMessageBox.showinfo("Treasure Value Changed!", "The value of this treasure is now 1"):
+        #    pass
         val = 1
+        colour = 'brown'
     elif icc == 2:
         print("Treasure now has the value of 2")
-        if tkMessageBox.showinfo("Treasure Value Changed!", "The value of this treasure is now 2"):
-            pass
+        #if tkMessageBox.showinfo("Treasure Value Changed!", "The value of this treasure is now 2"):
+        #    pass
         val = 2
+        colour = 'grey'
     elif icc == 3:
         print("Treasure now has the value of 3")
-        if tkMessageBox.showinfo("Treasure Value Changed!", "The value of this treasure is now 3"):
-            pass
+        #if tkMessageBox.showinfo("Treasure Value Changed!", "The value of this treasure is now 3"):
+        #    pass
         icc = 0
         val = 3
-    return val
+        colour = 'yellow'
+    return val, colour
 
 def chkOverlap():
     global treList
@@ -230,7 +278,21 @@ def chkOverlap():
             pass
     return canPlace
 
+def printCoord(event):
+    print event.x
+    print event.y
+
+def setTraps():
+    global ListTrap
+    ListTrap = []
+    for t in range(0, 15):
+        trap1 = Traps()
+        ListTrap.append(trap1)
+    return ListTrap
+        
+
 canvas.bind("<Button-1>", PlaceOB)
+canvas.bind("<Button-3>", printCoord)
 
 def updateTre(i,storeTre2):
     treList.insert(i,storeTre2)
@@ -241,16 +303,8 @@ def nextTreasure(storeTre):
     treList.append(storeTre)
     return treList
 
-def bubbleSort(treList):
-    print treList
-    for passnum in range(len(treList)-1,0,-1):
-        for i in range(passnum):
-            if treList[i].val>treList[i+1].val:
-                temp = treList[i]
-                treList[i] = treList[i+1]
-                treList[i+1] = temp
-    print treList
-    return treList
+def sortChoice():
+    pass
 
 greenTraffic = canvas.create_oval(3,29,3+10,29+10,fill = 'green')
 amberTraffic = canvas.create_oval(3,17,3+10,17+10,fill = 'black')
@@ -258,19 +312,31 @@ redTraffic = canvas.create_oval(3,5,3+10,5+10,fill = 'black')
 
 textWarning = canvas.create_text(600, 40, anchor=NE, text=".", fill='black')
 
-
-
 ###----------Buttons----------###
 
-#Start Robot and CountdownTimer#
+#Start Robot and Timer#
 def displayUFO():
-    global treList
-    bubbleSort(treList)
-    DisplayTimer1=DisplayTimer()
-    robot1 = Robot(20,20,treList)
-    robot1.movement(canvas)
+    global once
+    if once == True:
+        once = False
+        setTraps()
+        #Timer1=Timer(root)
+        #Timer1.pack()
+        #Timer1.Start()
+        robot1 = Robot(20,20,treList)
+        robot1.movement(canvas)
+    else:
+        pass
 
 Button(text="Start", cursor="trek", command=displayUFO).pack(side=LEFT, padx=20, pady=5)
+
+#Stop Timer#
+def END():
+    Timer1=Timer(root)
+    Timer1.pack()
+    Timer1.Stop()
+
+Button(text="Stop", cursor="trek", command=END).pack(side=LEFT, padx=0, pady=5)
 
 #Exit Program#
 def Exit():
@@ -280,33 +346,69 @@ def Exit():
 
 Button(text="Exit", cursor="trek", command=Exit).pack(side=RIGHT, padx=20, pady=5)
 
+###----------Timer----------###
 
+toolbar = Frame(root)
+toolbar.pack(side=BOTTOM, anchor=SW, padx=10, pady=5)
 
-###----------CountdownTimer----------###
+class Timer(Frame):
 
-class DisplayTimer(tk.Tk):
-    
-    def __init__(self):
-        tk.Tk.__init__(self)
-        self.label = Label(self, text="", font=('arial black', 25), width=8)
-        self.label.pack()
-        self.remaining = 0
-        self.countdowntimer(60)
+    #Implements timer widget#
+    def __init__(self, thing=None,*toolbar):
+        Frame.__init__(self, thing,toolbar)
+        self.start = 0
+        self.elapsedtime = 0
+        self.running = 0
+        self.timestr = StringVar()
+        self.timerwidget()
+        
+    #Timer widget on screen#
+    def timerwidget(self):
+        l = Label(self, textvariable=self.timestr)
+        self.settime(self.elapsedtime)
+        l.pack(padx=25, pady=14)
 
-    def countdowntimer(self, remaining = None):
-        if remaining is not None:
-            self.remaining = remaining
+    #Timer format in (00:00:00) = (Minutes : Seconds : Milliseconds)#
+    def settime(self, elaps):
+        minutes = int(elaps/60)
+        seconds = int(elaps - minutes*60)
+        milliseconds = int((elaps - minutes*60 - seconds)*100)
+        self.timestr.set('%02d:%02d:%02d'%(minutes, seconds, milliseconds))
 
-        if self.remaining <= 0:
-            self.label.configure(text="Time's Up!", font=('arial black', 25), fg='red')
-        else:
-            self.label.configure(text="%d" % self.remaining)
-            self.remaining = self.remaining - 1
-            self.after(1000, self.countdowntimer)
+    #Makes timer work#
+    def update(self):
+        self.elapsedtime = time.time() - self.start
+        self.settime(self.elapsedtime)
+        self.timer = self.after(50, self.update)
 
+    #Starts timer#
+    def Start(self):
+        if not self.running:
+            self.start = time.time() - self.elapsedtime
+            self.update()
+            self.running = 1
 
-            
-###----------Destinations----------###
+    #Stops timer#
+    def Stop(self):
+        if self.running:
+            self.after_cancel(self.timer)
+            self.elapsedtime = time.time() - self.start
+            self.settime(self.elapsedtime)
+            self.running = 0
+'''
+
+    def check_if_trapped(self, xx, yy, xx1, yy1):
+        self.length = len(ListTrap)
+        self.icci = -1
+        for t in range(0, self.length):
+            self.tempCoord = []
+            self.icci+=1
+            self.tempCoord = ListTrap[self.icci].givecoords()
+            if self.x > self.tempCoord[0] and self.x < self.tempCoord[2]:
+                if self.y > self.tempCoord[1] and self.y < self.tempCoord[3]:
+                    ListTrap.remove[self.icci]
+                    lstCol.delete[self.icci, last==NONE]
+ '''                   
 def treDesc():
     itn = random.randint(0, 5)
     if itn == 0:
@@ -325,7 +427,6 @@ def treDesc():
         pass
             
 ###----------Robot----------###
-
 class Robot(object):
 
     def __init__(self, x, y, treList):
@@ -334,6 +435,7 @@ class Robot(object):
         self.obnum = 5-1
         self.x = x
         self.y = y
+        self.path1 = 0
         self.x1 = x + 20
         self.y1 = y + 20
         self.pp=0
@@ -342,21 +444,146 @@ class Robot(object):
         self.tempxy =[]
         self.sum1 = 1
         self.sum2 = 1
+        self.ici=-1
+        self.icci = -1
         self.valX = False
         self.valY = False
         self.rotated = False
         self.stillSearch = True
         self.ic = 0
+        self.trappedList = []
         self.search()
         self.varTreasure = len(self.treList)
+        self.skip = skip
 
-        robotimage_url = "http://i.imgur.com/1AaKbvj.gif"
+        robotimage_url = "http://i.imgur.com/p5w3mCP.gif"
         image2_byt = urlopen(robotimage_url).read()
         image2_b64 = base64.encodestring(image2_byt)
         self.photo2 = tk.PhotoImage(data=image2_b64)
         self.id1 = canvas.create_image(self.x,self.y, image=self.photo2)
         canvas.update()
+        
+    def newIndex(self,Index):
+        self.index = Index
 
+    def removeFrom(self):
+        self.ici-=1
+        if lstCol.get(self.ici) == "":
+            pass
+        elif self.ici < 0:
+            pass
+        else:
+            lstCol.delete(self.ici)
+            self.trapScen()
+
+    def addTo(self):
+        self.ici+=1
+        if treList[self.treListIndex].val == 0:
+            lstCol.insert(self.ici, "Random treasure")
+        elif treList[self.treListIndex].val == 1:
+            lstCol.insert(self.ici, "Bronze Value Treasure")
+        elif treList[self.treListIndex].val == 2:
+            lstCol.insert(self.ici, "Silver Value Treasure")
+        elif treList[self.treListIndex].val == 3:
+            lstCol.insert(self.ici, "Gold Value Treasure")
+            
+
+    def wishList(self):
+        self.xRo = self.x
+        self.yRo = self.y
+        self.ic2 = -1
+        self.str1 = len(treList)
+        self.sortedNodePath = []
+        self.fake = False
+        self.ic1 = -1
+        self.nodePathList = []
+        self.trappedList = []
+        self.lenX = 0
+        self.lenY = 0
+        for t in range(0, self.str1):
+            self.ic1+=1
+            self.strTemp = []
+            self.count=-1
+            if skip == []:
+                self.strTemp = treList[self.ic1].givecoords()
+            else:
+                self.lenSkip = len(skip)
+                for t in range(0, self.lenSkip):
+                    self.count+=1
+                    if self.ic1 == skip[self.count]:
+                        self.fake = True
+                    else:
+                        self.strTemp = treList[self.ic1].givecoords()
+            if self.fake == True:
+                self.lenX = 5000
+                self.lenY = 5000
+            else:
+                self.lenX = (self.xRo - self.strTemp[0])
+                self.lenY = (self.yRo - self.strTemp[1])
+                if self.lenX < 0:
+                    self.lenX = (self.strTemp[0] - self.xRo)
+                if self.lenY < 0:
+                    self.lenY = (self.strTemp[1] - self.yRo)
+            self.fake = False
+            self.nodePathList.append(self.lenX+self.lenY)
+        self.sortedNodePath = copy.copy(self.nodePathList)
+        #######sorting
+        for passnum in range(len(self.sortedNodePath)-1,0,-1):
+            for i in range(passnum):
+                if self.sortedNodePath[i]>self.sortedNodePath[i+1]:
+                    self.temp = self.sortedNodePath[i]
+                    self.sortedNodePath[i] = self.sortedNodePath[i+1]
+                    self.sortedNodePath[i+1] = self.temp
+        #####
+        self.shortestPath = self.sortedNodePath[0]
+        for t in range(0, self.str1):
+            self.ic2+=1
+            if self.shortestPath == self.nodePathList[self.ic2]:
+                self.treListIndex = self.ic2
+                skip.append(self.treListIndex)
+                
+
+
+    def check_if_trapped(self):
+        self.length = len(ListTrap)
+        self.icci = -1
+        self.fake2 = False
+        for t in range(0, self.length):
+            self.tempCoord = []
+            self.icci+=1
+            self.counting = -1
+            if trappedList == []:
+                pass
+            else:
+                for t in range(0, len(trappedList)):
+                    self.counting+=1
+                    if self.icci == trappedList[self.counting]:
+                        self.fake2 = True
+            if self.fake2 == True:
+                self.fake2=False
+            else:
+                self.tempCoord = ListTrap[self.icci].givecoords()
+                if self.x > self.tempCoord[0] and self.x < self.tempCoord[2]:
+                    if self.y > self.tempCoord[1] and self.y < self.tempCoord[3]:
+                        trappedList.append(self.icci)
+                        self.removeFrom()
+    def trapScen(self):
+        self.itn = random.randint(0, 5)
+        if self.itn == 0:
+            self.xXx1337h4x0rzxXx = "a tank malfunction caused you to be robbed by locals of ukraine, you have been robbed of 1 treasure"
+        elif self.itn == 1:
+            self.xXx1337h4x0rzxXx = "a pot hole caused you to drop a treasure without realizing"
+        elif self.itn == 2:
+            self.xXx1337h4x0rzxXx = "a traitor within your convoy has ran off with one of your treasures"
+        elif self.itn == 3:
+            self.xXx1337h4x0rzxXx = "the wildlife animals have surrounded you, oh no! a wolf has taken off with one of your treasures"
+        elif self.itn == 4:
+            self.xXx1337h4x0rzxXx = "a street dealer offers you top dollar for one of your treasures, as soon as you handed him the treasure he ran off with it"
+        elif self.itn == 5:
+            self.xXx1337h4x0rzxXx = "whilst camping for the night, a group of locals raided your stash, you have lost 1 treasure"
+        if tkMessageBox.showinfo("Oh no!!! you have been trapped, ", self.xXx1337h4x0rzxXx):
+            pass
+    
     def EndCheck(self):
         self.ic+=1
 
@@ -367,8 +594,8 @@ class Robot(object):
                 
     def search(self):  
         try:
-            self.q += 1
-            LMcoordtemp = treList[self.q].givecoords()
+            self.wishList()
+            LMcoordtemp = treList[self.treListIndex].givecoords()
             destxx = LMcoordtemp[0]
             destxx+=20
             destyy = LMcoordtemp[1]
@@ -400,8 +627,11 @@ class Robot(object):
 
         while self.stillSearch == True:
             if self.valX == True and self.valY == True:
+                self.addTo()
+                #skip.append(self.treListIndex)
                 self.EndCheck()
                 treDesc()
+                self.search
                 dest = self.destxy
                 self.valX = False
                 self.valY = False
@@ -427,7 +657,7 @@ class Robot(object):
                     if self.x > dest[0] and self.x < dest[2]:
                         self.sum1 = 0
                         self.valX = True
-                        
+                self.check_if_trapped()      
                 self.y+=self.sum2
                 self.x+=self.sum1
                 self.x1 = self.x + 20
@@ -437,7 +667,7 @@ class Robot(object):
                 canvas.update()
                 
             if sleeping == 1:
-               time.sleep(0.01)
+               time.sleep(0.02)
             elif sleeping == 2:
                 time.sleep(0.07)
             elif sleeping == 3:
