@@ -4,6 +4,7 @@ import time
 import random
 import io
 import base64
+import webbrowser
 import tkMessageBox
 import copy
 import Tkinter as tk
@@ -53,44 +54,6 @@ i=1
 counting = 0
 root = Tk()
 root.title("Vladimir's Conquest")
-'''
-instructionTextOne = "Become Vladimir and conquer Russia!"
-instructionTextTwo = "Left click anywhere on the canvas to choose your destination. You can add as many destinations as you like.\
-Once you have placed as many destinations as you like, click 'Start'."
-
-
-def instructionsLink():
-    instructionsWindow = Toplevel()
-
-    instructionsLabel = Label(instructionsWindow, text="Instructions", font="Stencil 20", bg="lightgreen", wraplength=250)
-    instructionsLabel.pack(side=TOP)
-    instructionsLabel = Label(instructionsWindow, text=instructionTextOne, wraplength=250)
-    instructionsLabel.pack(side=TOP)
-    instructionsLabel = Label(instructionsWindow, text=instructionTextTwo, wraplength=250)
-    instructionsLabel.pack(side=TOP)
-
-def descriptionsLink():
-
-    descriptionsWindow = Toplevel()
-   
-    descriptionsLabelOne = Label(descriptionsWindow, text="Destinations", font="Stencil 20", bg="lightgreen", wraplength=250)
-    descriptionsLabelOne.pack(side=TOP)
-    descriptionsLabelTwo = Label(descriptionsWindow, text="meh", wraplength=250)
-    descriptionsLabelTwo.pack(side=TOP)
-
-menubar = Menu(root)
-infomenu = Menu(menubar, tearoff=0)
-infomenu.add_command(label="Instructions", command=instructionsLink)
-infomenu.add_command(label="Destinations", command=descriptionsLink)
-menubar.add_cascade(label="Information", menu=infomenu)
-
-optionmenu = Menu(menubar, tearoff=0)
-optionmenu.add_command(label="Close", command=root.destroy)
-#editmenu.add_separator()
-menubar.add_cascade(label="Options", menu=optionmenu)
-
-root.config(menu=menubar)
-'''
 
 image_url = "http://i.imgur.com/gqL0Q5z.gif"
 image_byt = urlopen(image_url).read()
@@ -103,6 +66,61 @@ ypos = 0
 canvas.create_image(xpos, ypos, image=photo)
 canvas.pack()
 
+
+
+###----------Instructions and Treasure Items List----------###
+instructionTextOne = "Become Vladimir and conquer Russia!"
+instructionTextTwo = "Left click anywhere on the canvas to choose your destination. You can add as many destinations as you like.\
+Once you have placed as many destinations as you like, click 'Start'."
+
+def instructionsLink():
+    
+   instructionsWindow = Toplevel()
+
+   instructionsLabel = Label(instructionsWindow, text="Instructions", font="Stencil 20", bg="lightgreen", wraplength=250)
+   instructionsLabel.pack(side=TOP)
+   instructionsLabel = Label(instructionsWindow, text=instructionTextOne, wraplength=250)
+   instructionsLabel.pack(side=TOP)
+   instructionsLabel = Label(instructionsWindow, text=instructionTextTwo, wraplength=250)
+   instructionsLabel.pack(side=TOP)
+
+
+def descriptionsLabelTwo_callback(event):
+    webbrowser.open_new("http://en.wikipedia.org/wiki/Putinka")
+    
+def descriptionsLabelThree_callback(event):
+    webbrowser.open_new("http://en.wikipedia.org/wiki/Koni_(dog)")
+    
+def descriptionsLabelFour_callback(event):
+    webbrowser.open_new("http://en.wikipedia.org/wiki/Gold")
+    
+
+def descriptionsLink():
+   descriptionsWindow = Toplevel()
+   
+   descriptionsLabelOne = Label(descriptionsWindow, text="Treasures!", font="Stencil 20", bg="lightgreen", wraplength=250)
+   descriptionsLabelOne.pack(side=TOP)
+   descriptionsLabelTwo = Label(descriptionsWindow, text="Treasure 1: Crates of Vodka", fg="Blue", wraplength=250)
+   descriptionsLabelTwo.pack(side=TOP)
+   descriptionsLabelTwo.bind("<Button-1>",descriptionsLabelTwo_callback)
+   descriptionsLabelThree = Label(descriptionsWindow, text="Treasure 2: Koni the Dog", fg="Blue", wraplength=250)
+   descriptionsLabelThree.pack(side=TOP)
+   descriptionsLabelThree.bind("<Button-1>",descriptionsLabelThree_callback)
+   descriptionsLabelFour = Label(descriptionsWindow, text="Treasure 3: Tons of Gold", fg="Blue", wraplength=250)
+   descriptionsLabelFour.pack(side=TOP)
+   descriptionsLabelFour.bind("<Button-1>",descriptionsLabelFour_callback)
+
+menubar = Menu(root)
+infomenu = Menu(menubar, tearoff=0)
+infomenu.add_command(label="Instructions", command=instructionsLink)
+infomenu.add_command(label="Treasure Items", command=descriptionsLink)
+menubar.add_cascade(label="Information", menu=infomenu)
+
+root.config(menu=menubar)
+
+
+
+###----------Traps----------###
 class Traps(object):
     def __init__(self):
         self.numX = 0
@@ -120,6 +138,9 @@ class Traps(object):
     def givecoords(self):
         return self.numX, self.numY, self.numXX, self.numYY
 
+
+
+###----------Treasure Locations----------###
 class Treasure(object):
     def __init__(self,xx,yy,treName):
         self.treList = []
