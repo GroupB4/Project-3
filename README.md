@@ -1,4 +1,4 @@
-James Payne: Project Manager and lead programmer 
+James Payne: Project Manager & Programmer
 
 Jake Pulley: Programmer
 
@@ -8,4 +8,4 @@ Olivia Qader: Programmer
 
 Hadiyah Mughal: UI Design & Programmer
 
-Pavilion Sahota: Sweg lord you fukin plebs (1337 Programmer)
+Pavilion Sahota: GUI Design and Lead Programmer
